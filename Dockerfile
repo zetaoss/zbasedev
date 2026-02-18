@@ -13,7 +13,7 @@ ARG CHATGPT_CLI_VERSION=v1.10.9
 # https://github.com/google-gemini/gemini-cli/tags
 ARG GEMINI_CLI_VERSION=v0.25.2
 # https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.108.1
+ARG VSCODE_VERSION=1.109.4
 
 RUN set -eux \
     && apt-get update && apt-get install -y --no-install-recommends \
