@@ -6,7 +6,8 @@ ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
 # winget show    --id Microsoft.VisualStudioCode
 # winget upgrade --id Microsoft.VisualStudioCode
-ARG VSCODE_VERSION=1.110.0
+# https://github.com/microsoft/vscode/tags
+ARG VSCODE_VERSION=1.110
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
