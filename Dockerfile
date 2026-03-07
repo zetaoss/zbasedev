@@ -47,6 +47,7 @@ RUN set -eux \
     && tar -C /usr/local -xzf /tmp/go.tgz \
     && rm -f /tmp/go.tgz \
     && mkdir -p "${GOPATH}/bin" \
+    && export PATH=/usr/local/go/bin:/root/go/bin:$PATH \
     && go version \
     && go install golang.org/x/tools/gopls@latest \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
