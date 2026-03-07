@@ -4,6 +4,10 @@ FROM ghcr.io/zetaoss/zbase:v0.43.630
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
+# winget show    --id Microsoft.VisualStudioCode
+# winget upgrade --id Microsoft.VisualStudioCode
+# https://github.com/microsoft/vscode/tags
+ARG VSCODE_VERSION=1.110
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
@@ -14,8 +18,6 @@ ARG GO_VERSION=1.25.8
 ARG CHATGPT_CLI_VERSION=v1.10.10
 # https://github.com/google-gemini/gemini-cli/tags
 ARG GEMINI_CLI_VERSION=v0.32.1
-# https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.110.1
 
 ENV GOPATH=/root/go
 ENV PATH=/usr/local/go/bin:/root/go/bin:${PATH}
@@ -52,7 +54,6 @@ RUN set -eux \
     && go install golang.org/x/tools/gopls@latest \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
     && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
-    && go install github.com/air-verse/air@latest \
     ## pnpm
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash \
     && . "$HOME/.nvm/nvm.sh" \
