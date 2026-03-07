@@ -5,15 +5,20 @@ ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
 # https://nodejs.org/en/download LTS for linux using nvm
-ARG NVM_VERSION=v0.40.3
+ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
 
+# https://go.dev/dl/
+ARG GO_VERSION=1.25.8
 # https://github.com/kardolus/chatgpt-cli/tags
-ARG CHATGPT_CLI_VERSION=v1.10.9
+ARG CHATGPT_CLI_VERSION=v1.10.10
 # https://github.com/google-gemini/gemini-cli/tags
-ARG GEMINI_CLI_VERSION=v0.25.2
+ARG GEMINI_CLI_VERSION=v0.32.1
 # https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.109.4
+ARG VSCODE_VERSION=1.110.1
+
+ENV GOPATH=/root/go
+ENV PATH=/usr/local/go/bin:/root/go/bin:${PATH}
 
 RUN set -eux \
     && apt-get update && apt-get install -y --no-install-recommends \
@@ -30,9 +35,26 @@ RUN set -eux \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
+    ## go
+    && ARCH="$(dpkg --print-architecture)" \
+    && case "${ARCH}" in \
+        amd64) GOARCH='amd64' ;; \
+        arm64) GOARCH='arm64' ;; \
+        *) echo "unsupported arch: ${ARCH}" >&2; exit 1 ;; \
+    esac \
+    && curl -L "https://go.dev/dl/go${GO_VERSION}.linux-${GOARCH}.tar.gz" -o /tmp/go.tgz \
+    && rm -rf /usr/local/go \
+    && tar -C /usr/local -xzf /tmp/go.tgz \
+    && rm -f /tmp/go.tgz \
+    && mkdir -p "${GOPATH}/bin" \
+    && go version \
+    && go install golang.org/x/tools/gopls@latest \
+    && go install github.com/go-delve/delve/cmd/dlv@latest \
+    && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
+    && go install github.com/air-verse/air@latest \
     ## pnpm
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash \
-    && source "$HOME/.nvm/nvm.sh" \
+    && . "$HOME/.nvm/nvm.sh" \
     && nvm install ${NODE_MAJOR_VERSION} \
     && node -v \
     && corepack enable pnpm \
@@ -56,6 +78,7 @@ RUN set -eux \
     editorconfig.editorconfig \
     esbenp.prettier-vscode \
     evgenius33.laravel-pint-fixer \
+    golang.go \
     laravel.vscode-laravel \
     ms-azuretools.vscode-containers \
     ms-vscode.makefile-tools \
