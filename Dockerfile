@@ -93,6 +93,7 @@ RUN set -eux \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
     && cd /app/laravel/ && composer install \
-    && cd /app/svelte/                  && pnpm config set only-built-dependencies esbuild && pnpm install && pnpm run build \
-    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm config set only-built-dependencies esbuild && pnpm install && pnpm run build \
+    && cd /app/svelte/                  && echo "onlyBuiltDependencies=esbuild" >> .npmrc && pnpm install && pnpm run build \
+    && cd /app/w/skins/ZetaSkin/svelte/ && echo "onlyBuiltDependencies=esbuild" >> .npmrc && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
+
