@@ -93,7 +93,7 @@ RUN set -eux \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
     && cd /app/laravel/ && composer install \
-    && cd /app/svelte/                  && pnpm approve-builds && pnpm install && pnpm run build \
-    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm approve-builds && pnpm install && pnpm run build \
+    && cd /app/svelte/                  && pnpm install || true && pnpm approve-builds && pnpm install && pnpm run build \
+    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm install || true && pnpm approve-builds && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
 
