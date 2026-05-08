@@ -63,7 +63,7 @@ RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
     && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${VSCODE_VERSION} | jq -r '.object.sha')" \
     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${SHA}" \
-    && curl -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
+    && curl -s -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
     && tar -xz -C "${VSCODE_SERVER_DIR}/bin/${SHA}" --strip-components=1 -f vscode-server.tar.gz \
     && rm -f vscode-server.tar.gz \
     && for extension in \
@@ -93,7 +93,7 @@ RUN set -eux \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
     && cd /app/laravel/ && composer install \
-    && cd /app/svelte/                  && pnpm install || true && printf 'a\n\n' | pnpm approve-builds && pnpm install && pnpm run build \
-    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm install || true && printf 'a\n\n' | pnpm approve-builds && pnpm install && pnpm run build \
+    && cd /app/svelte/                  && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
+    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
 
