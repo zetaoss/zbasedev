@@ -1,5 +1,5 @@
 # https://github.com/zetaoss/zbase
-FROM ghcr.io/zetaoss/zbase:v0.43.632
+FROM ghcr.io/zetaoss/zbase:v0.43.800
 
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
@@ -7,33 +7,29 @@ ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 # winget show    --id Microsoft.VisualStudioCode
 # winget upgrade --id Microsoft.VisualStudioCode
 # https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.110
+ARG VSCODE_VERSION=1.119.0
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
 
 # https://go.dev/dl/
-ARG GO_VERSION=1.25.8
-# https://github.com/kardolus/chatgpt-cli/tags
-ARG CHATGPT_CLI_VERSION=v1.10.10
-# https://github.com/google-gemini/gemini-cli/tags
-ARG GEMINI_CLI_VERSION=v0.32.1
+ARG GO_VERSION=1.26.3
 
 ENV GOPATH=/root/go
 ENV PATH=/usr/local/go/bin:/root/go/bin:${PATH}
 
 RUN set -eux \
     && apt-get update && apt-get install -y --no-install-recommends \
-    inotify-tools \
-    jq \
-    mariadb-client \
-    procps \
-    psmisc \
-    redis-tools \
-    ripgrep \
-    supervisor \
-    tini \
-    unzip \
+        inotify-tools \
+        jq \
+        mariadb-client \
+        procps \
+        psmisc \
+        redis-tools \
+        ripgrep \
+        supervisor \
+        tini \
+        unzip \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
@@ -61,32 +57,30 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
-    && PNPM_HOME=/usr/local/bin pnpm add -g @google/gemini-cli@${GEMINI_CLI_VERSION} \
-    && pnpm cache clean \
-    && curl -L -o chatgpt https://github.com/kardolus/chatgpt-cli/releases/download/${CHATGPT_CLI_VERSION}/chatgpt-linux-amd64 && chmod +x chatgpt && mv chatgpt /usr/local/bin/ \
     && rm -rf /tmp/pear/
 
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
     && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${VSCODE_VERSION} | jq -r '.object.sha')" \
     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${SHA}" \
-    && curl -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
+    && curl -s -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
     && tar -xz -C "${VSCODE_SERVER_DIR}/bin/${SHA}" --strip-components=1 -f vscode-server.tar.gz \
     && rm -f vscode-server.tar.gz \
     && for extension in \
-    bradlc.vscode-tailwindcss \
-    dawhite.mustache \
-    dbaeumer.vscode-eslint \
-    editorconfig.editorconfig \
-    esbenp.prettier-vscode \
-    evgenius33.laravel-pint-fixer \
-    golang.go \
-    laravel.vscode-laravel \
-    ms-azuretools.vscode-containers \
-    ms-vscode.makefile-tools \
-    openai.chatgpt \
-    svelte.svelte-vscode \
-    vitest.explorer \
+        bradlc.vscode-tailwindcss \
+        dawhite.mustache \
+        dbaeumer.vscode-eslint \
+        editorconfig.editorconfig \
+        esbenp.prettier-vscode \
+        evgenius33.laravel-pint-fixer \
+        golang.go \
+        Google.geminicodeassist \
+        laravel.vscode-laravel \
+        ms-azuretools.vscode-containers \
+        ms-vscode.makefile-tools \
+        openai.chatgpt \
+        svelte.svelte-vscode \
+        vitest.explorer \
     ; do \
     "${VSCODE_SERVER_DIR}/bin/${SHA}/bin/code-server" --install-extension "${extension}"; \
     done
@@ -99,6 +93,7 @@ RUN set -eux \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
     && cd /app/laravel/ && composer install \
-    && cd /app/svelte/                  && pnpm install && pnpm run build \
-    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm install && pnpm run build \
+    && cd /app/svelte/                  && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
+    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
+
