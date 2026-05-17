@@ -31,8 +31,6 @@ RUN set -eux \
         tini \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
     ## go
     && ARCH="$(dpkg --print-architecture)" \
     && case "${ARCH}" in \
@@ -57,8 +55,7 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
-    && npm install -g @google/gemini-cli \
-    && rm -rf /tmp/pear/
+    && npm install -g @google/gemini-cli
 
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
