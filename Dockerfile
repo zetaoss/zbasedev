@@ -7,7 +7,7 @@ ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 # winget show    --id Microsoft.VisualStudioCode
 # winget upgrade --id Microsoft.VisualStudioCode
 # https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.119.0
+ARG VSCODE_VERSION=1.120.0
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
@@ -57,6 +57,7 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
+    && npm install -g @google/gemini-cli \
     && rm -rf /tmp/pear/
 
 RUN set -eux \
@@ -74,8 +75,6 @@ RUN set -eux \
         esbenp.prettier-vscode \
         evgenius33.laravel-pint-fixer \
         golang.go \
-        Google.geminicodeassist \
-        laravel.vscode-laravel \
         ms-azuretools.vscode-containers \
         ms-vscode.makefile-tools \
         openai.chatgpt \
