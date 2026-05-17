@@ -47,7 +47,6 @@ RUN set -eux \
     && go version \
     && go install golang.org/x/tools/gopls@latest \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
-    && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
     ## pnpm
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash \
     && . "$HOME/.nvm/nvm.sh" \
