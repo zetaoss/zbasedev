@@ -87,4 +87,3 @@ RUN set -eux \
     && cd /app/svelte/                  && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && cd /app/w/skins/ZetaSkin/svelte/ && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
-
