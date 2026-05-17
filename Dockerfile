@@ -4,10 +4,6 @@ FROM ghcr.io/zetaoss/zbase:v0.43.800
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
-# winget show    --id Microsoft.VisualStudioCode
-# winget upgrade --id Microsoft.VisualStudioCode
-# https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.119.0
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
@@ -31,8 +27,6 @@ RUN set -eux \
         tini \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
     ## go
     && ARCH="$(dpkg --print-architecture)" \
     && case "${ARCH}" in \
@@ -49,7 +43,6 @@ RUN set -eux \
     && go version \
     && go install golang.org/x/tools/gopls@latest \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
-    && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
     ## pnpm
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash \
     && . "$HOME/.nvm/nvm.sh" \
@@ -57,11 +50,12 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
-    && rm -rf /tmp/pear/
+    && npm install -g @google/gemini-cli
 
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
-    && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${VSCODE_VERSION} | jq -r '.object.sha')" \
+    && TAG="$(curl -s https://api.github.com/repos/microsoft/vscode/releases/latest | jq -r .tag_name)" \
+    && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${TAG} | jq -r .object.sha)" \
     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${SHA}" \
     && curl -s -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
     && tar -xz -C "${VSCODE_SERVER_DIR}/bin/${SHA}" --strip-components=1 -f vscode-server.tar.gz \
@@ -74,8 +68,6 @@ RUN set -eux \
         esbenp.prettier-vscode \
         evgenius33.laravel-pint-fixer \
         golang.go \
-        Google.geminicodeassist \
-        laravel.vscode-laravel \
         ms-azuretools.vscode-containers \
         ms-vscode.makefile-tools \
         openai.chatgpt \
@@ -92,8 +84,6 @@ RUN set -eux \
     && mv     /var/www/html                     /app/w \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
-    && cd /app/laravel/ && composer install \
     && cd /app/svelte/                  && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && cd /app/w/skins/ZetaSkin/svelte/ && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
-
