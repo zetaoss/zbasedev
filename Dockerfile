@@ -4,10 +4,6 @@ FROM ghcr.io/zetaoss/zbase:v0.43.800
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
-# winget show    --id Microsoft.VisualStudioCode
-# winget upgrade --id Microsoft.VisualStudioCode
-# https://github.com/microsoft/vscode/tags
-ARG VSCODE_VERSION=1.120.0
 # https://nodejs.org/en/download LTS for linux using nvm
 ARG NVM_VERSION=v0.40.4
 ARG NODE_MAJOR_VERSION=24
@@ -58,7 +54,8 @@ RUN set -eux \
 
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
-    && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${VSCODE_VERSION} | jq -r '.object.sha')" \
+    && TAG="$(curl -s https://api.github.com/repos/microsoft/vscode/releases/latest | jq -r .tag_name)" \
+    && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${TAG} | jq -r .object.sha)" \
     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${SHA}" \
     && curl -s -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
     && tar -xz -C "${VSCODE_SERVER_DIR}/bin/${SHA}" --strip-components=1 -f vscode-server.tar.gz \
