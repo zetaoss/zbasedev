@@ -69,6 +69,7 @@ RUN set -eux \
         esbenp.prettier-vscode \
         evgenius33.laravel-pint-fixer \
         golang.go \
+        Google.geminicodeassist \
         ms-azuretools.vscode-containers \
         ms-vscode.makefile-tools \
         openai.chatgpt \
