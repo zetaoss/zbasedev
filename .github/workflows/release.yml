@@ -36,5 +36,4 @@ jobs:
             ZBASEDEV_VERSION=${{ github.ref_name }}
           tags: ${{ steps.meta_zbasedev.outputs.tags }}
           labels: ${{ steps.meta_zbasedev.outputs.labels }}
-          cache-from: type=gha,scope=zbasedev
-          cache-to: type=gha,mode=max,scope=zbasedev
+
