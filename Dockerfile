@@ -53,13 +53,16 @@ RUN set -eux \
     && pnpm -v \
     && npm install -g @google/gemini-cli
 
+### vscode
+# winget upgrade -e --id Microsoft.VisualStudioCode
+# code --version
+ARG COMMIT_ID=f6cfa2ea2403534de03f069bdf160d06451ed282
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
-    && TAG="$(curl -s https://api.github.com/repos/microsoft/vscode/releases/latest | jq -r .tag_name)" \
-    && SHA="$(curl -s https://api.github.com/repos/microsoft/vscode/git/ref/tags/${TAG} | jq -r .object.sha)" \
-    && mkdir -p "${VSCODE_SERVER_DIR}/bin/${SHA}" \
-    && curl -s -L "https://update.code.visualstudio.com/commit:${SHA}/server-linux-x64/stable" -o vscode-server.tar.gz \
-    && tar -xz -C "${VSCODE_SERVER_DIR}/bin/${SHA}" --strip-components=1 -f vscode-server.tar.gz \
+    && mkdir -p "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" \
+    #&& curl -fSL "https://update.code.visualstudio.com/commit:${COMMIT_ID}/server-linux-x64/stable" -o vscode-server.tar.gz \
+    && curl -fSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/${COMMIT_ID}/vscode-server-linux-x64.tar.gz" -o vscode-server.tar.gz \
+    && tar -xzf vscode-server.tar.gz -C "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" --strip-components=1 \
     && rm -f vscode-server.tar.gz \
     && for extension in \
         bradlc.vscode-tailwindcss \
@@ -75,7 +78,7 @@ RUN set -eux \
         svelte.svelte-vscode \
         vitest.explorer \
     ; do \
-    "${VSCODE_SERVER_DIR}/bin/${SHA}/bin/code-server" --install-extension "${extension}"; \
+    "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}/bin/code-server" --install-extension "${extension}"; \
     done
 
 RUN set -eux \
