@@ -33,5 +33,3 @@ jobs:
             ZBASEDEV_VERSION=rc
           tags: ghcr.io/zetaoss/zbasedev:rc
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=zbasedev
-          cache-to: type=gha,mode=max,scope=zbasedev
