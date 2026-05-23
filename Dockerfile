@@ -1,5 +1,5 @@
 # https://github.com/zetaoss/zbase
-FROM ghcr.io/zetaoss/zbase:v0.43.800
+FROM ghcr.io/zetaoss/zbase:v0.43.802
 
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
@@ -69,7 +69,6 @@ RUN set -eux \
         esbenp.prettier-vscode \
         evgenius33.laravel-pint-fixer \
         golang.go \
-        Google.geminicodeassist \
         ms-azuretools.vscode-containers \
         ms-vscode.makefile-tools \
         openai.chatgpt \
