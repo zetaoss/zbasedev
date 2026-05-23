@@ -88,6 +88,6 @@ RUN set -eux \
     && mv     /var/www/html                     /app/w \
     && ln -rs /app/mwz/extensions/ZetaExtension /app/w/extensions/ \
     && ln -rs /app/mwz/skins/ZetaSkin           /app/w/skins/ \
-    && cd /app/svelte/                  && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
-    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm add esbuild --allow-build=esbuild && pnpm install && pnpm run build \
+    && cd /app/svelte/                  && pnpm install && pnpm run build \
+    && cd /app/w/skins/ZetaSkin/svelte/ && pnpm install && pnpm run build \
     && chown www-data:www-data -R /app/*
