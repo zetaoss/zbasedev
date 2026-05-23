@@ -1,5 +1,5 @@
 # https://github.com/zetaoss/zbase
-FROM ghcr.io/zetaoss/zbase:v0.43.802
+FROM ghcr.io/zetaoss/zbase:v0.43.803
 
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
