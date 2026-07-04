@@ -1,15 +1,15 @@
 # https://github.com/zetaoss/zbase
-FROM ghcr.io/zetaoss/zbase:v0.43.804
+FROM ghcr.io/zetaoss/zbase:v0.43.900
 
 ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
 # https://nodejs.org/en/download LTS for linux using nvm
-ARG NVM_VERSION=v0.40.4
+ARG NVM_VERSION=v0.40.5
 ARG NODE_MAJOR_VERSION=24
 
 # https://go.dev/dl/
-ARG GO_VERSION=1.26.3
+ARG GO_VERSION=1.26.4
 
 ENV GOPATH=/root/go
 ENV PATH=/usr/local/go/bin:/root/go/bin:${PATH}
@@ -70,7 +70,6 @@ RUN set -eux \
         dbaeumer.vscode-eslint \
         editorconfig.editorconfig \
         esbenp.prettier-vscode \
-        evgenius33.laravel-pint-fixer \
         golang.go \
         ms-azuretools.vscode-containers \
         ms-vscode.makefile-tools \
