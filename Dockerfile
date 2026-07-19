@@ -51,7 +51,8 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
-    && npm install -g @google/gemini-cli
+    && curl -fsSL https://antigravity.google/cli/install.sh | bash \
+    && echo ok
 
 ### vscode
 # winget upgrade -e --id Microsoft.VisualStudioCode
