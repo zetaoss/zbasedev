@@ -5,11 +5,11 @@ ARG ZBASEDEV_VERSION
 ENV ZBASEDEV_VERSION=${ZBASEDEV_VERSION}
 
 # https://nodejs.org/en/download LTS for linux using nvm
-ARG NVM_VERSION=v0.40.5
+ARG NVM_VERSION=v0.40.6
 ARG NODE_MAJOR_VERSION=24
 
 # https://go.dev/dl/
-ARG GO_VERSION=1.26.4
+ARG GO_VERSION=1.26.5
 
 ENV GOPATH=/root/go
 ENV PATH=/usr/local/go/bin:/root/go/bin:${PATH}
@@ -20,12 +20,12 @@ RUN set -eux \
         jq \
         mariadb-client \
         procps \
-        psmisc \
-        redis-tools \
+        # psmisc \
+        # redis-tools \
         ripgrep \
         supervisor \
-        tini \
-        unzip \
+        # tini \
+        # unzip \
     && rm -rf /var/lib/apt/lists/* \
     ## go
     && ARCH="$(dpkg --print-architecture)" \
@@ -51,7 +51,8 @@ RUN set -eux \
     && node -v \
     && corepack enable pnpm \
     && pnpm -v \
-    && npm install -g @google/gemini-cli
+    && curl -fsSL https://antigravity.google/cli/install.sh | bash \
+    && echo ok
 
 ### vscode
 # winget upgrade -e --id Microsoft.VisualStudioCode
@@ -66,16 +67,16 @@ RUN set -eux \
     && rm -f vscode-server.tar.gz \
     && for extension in \
         bradlc.vscode-tailwindcss \
-        dawhite.mustache \
-        dbaeumer.vscode-eslint \
-        editorconfig.editorconfig \
-        esbenp.prettier-vscode \
+        # dawhite.mustache \
+        # dbaeumer.vscode-eslint \
+        # editorconfig.editorconfig \
+        # esbenp.prettier-vscode \
         golang.go \
-        ms-azuretools.vscode-containers \
-        ms-vscode.makefile-tools \
+        # ms-azuretools.vscode-containers \
+        # ms-vscode.makefile-tools \
         openai.chatgpt \
         svelte.svelte-vscode \
-        vitest.explorer \
+        # vitest.explorer \
     ; do \
     "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}/bin/code-server" --install-extension "${extension}"; \
     done

@@ -1,19 +1,32 @@
 name: Auto Assign
+
 on:
   issues:
     types: [opened, reopened]
-  pull_request:
-    types: [opened, reopened]
+
+permissions:
+  issues: write
+
 jobs:
-  run:
+  assign-issue:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
     steps:
-      - name: "Auto-assign issue"
-        uses: pozil/auto-assign-issue@v1
+      - name: Auto-assign issue
+        uses: actions/github-script@v8
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: jmnote
-          numOfAssignee: 1
+          script: |
+            const assignee = 'jmnote';
+            const issueNumber = context.issue.number;
+
+            if (context.payload.issue.assignees?.some(({ login }) => login === assignee)) {
+              core.info(`Issue #${issueNumber} is already assigned to ${assignee}.`);
+              return;
+            }
+
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              assignees: [assignee]
+            });
+            core.info(`Assigned issue #${issueNumber} to ${assignee}.`);

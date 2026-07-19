@@ -81,6 +81,16 @@ jobs:
               return;
             }
 
+            const comparison = await github.rest.repos.compareCommitsWithBasehead({
+              owner,
+              repo,
+              basehead: `${baseBranch}...${headBranch}`
+            });
+            if (comparison.data.ahead_by === 0) {
+              core.info(`Skip: ${headBranch} has no commits ahead of ${baseBranch}.`);
+              return;
+            }
+
             const prTitle = headCommitMessage
               .split('\n')[0]
               .trim();
