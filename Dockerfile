@@ -66,16 +66,16 @@ RUN set -eux \
     && rm -f vscode-server.tar.gz \
     && for extension in \
         bradlc.vscode-tailwindcss \
-        dawhite.mustache \
-        dbaeumer.vscode-eslint \
-        editorconfig.editorconfig \
-        esbenp.prettier-vscode \
+        # dawhite.mustache \
+        # dbaeumer.vscode-eslint \
+        # editorconfig.editorconfig \
+        # esbenp.prettier-vscode \
         golang.go \
-        ms-azuretools.vscode-containers \
-        ms-vscode.makefile-tools \
+        # ms-azuretools.vscode-containers \
+        # ms-vscode.makefile-tools \
         openai.chatgpt \
         svelte.svelte-vscode \
-        vitest.explorer \
+        # vitest.explorer \
     ; do \
     "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}/bin/code-server" --install-extension "${extension}"; \
     done
