@@ -20,12 +20,12 @@ RUN set -eux \
         jq \
         mariadb-client \
         procps \
-        psmisc \
-        redis-tools \
+        # psmisc \
+        # redis-tools \
         ripgrep \
         supervisor \
-        tini \
-        unzip \
+        # tini \
+        # unzip \
     && rm -rf /var/lib/apt/lists/* \
     ## go
     && ARCH="$(dpkg --print-architecture)" \
