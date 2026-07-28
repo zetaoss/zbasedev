@@ -52,6 +52,7 @@ RUN set -eux \
     && corepack enable pnpm \
     && pnpm -v \
     && curl -fsSL https://antigravity.google/cli/install.sh | bash \
+    && curl -fsSL https://chatgpt.com/codex/install.sh | sh \
     && echo ok
 
 ### vscode
