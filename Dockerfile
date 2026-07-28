@@ -58,7 +58,7 @@ RUN set -eux \
 ### vscode
 # winget upgrade -e --id Microsoft.VisualStudioCode
 # code --version
-ARG COMMIT_ID=f6cfa2ea2403534de03f069bdf160d06451ed282
+ARG COMMIT_ID=1b6a188127eeaf9194f945eb6eb89a657e93c54c
 RUN set -eux \
     && VSCODE_SERVER_DIR=/root/.vscode-server \
     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" \
