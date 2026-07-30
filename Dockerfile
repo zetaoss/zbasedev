@@ -23,6 +23,7 @@ RUN set -eux \
         # psmisc \
         # redis-tools \
         ripgrep \
+        sshd \
         supervisor \
         # tini \
         # unzip \
@@ -58,29 +59,29 @@ RUN set -eux \
 ### vscode
 # winget upgrade -e --id Microsoft.VisualStudioCode
 # code --version
-ARG COMMIT_ID=1b6a188127eeaf9194f945eb6eb89a657e93c54c
-RUN set -eux \
-    && VSCODE_SERVER_DIR=/root/.vscode-server \
-    && mkdir -p "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" \
-    #&& curl -fSL "https://update.code.visualstudio.com/commit:${COMMIT_ID}/server-linux-x64/stable" -o vscode-server.tar.gz \
-    && curl -fSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/${COMMIT_ID}/vscode-server-linux-x64.tar.gz" -o vscode-server.tar.gz \
-    && tar -xzf vscode-server.tar.gz -C "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" --strip-components=1 \
-    && rm -f vscode-server.tar.gz \
-    && for extension in \
-        bradlc.vscode-tailwindcss \
-        # dawhite.mustache \
-        # dbaeumer.vscode-eslint \
-        # editorconfig.editorconfig \
-        # esbenp.prettier-vscode \
-        golang.go \
-        # ms-azuretools.vscode-containers \
-        # ms-vscode.makefile-tools \
-        openai.chatgpt \
-        svelte.svelte-vscode \
-        # vitest.explorer \
-    ; do \
-    "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}/bin/code-server" --install-extension "${extension}"; \
-    done
+# ARG COMMIT_ID=1b6a188127eeaf9194f945eb6eb89a657e93c54c
+# RUN set -eux \
+#     && VSCODE_SERVER_DIR=/root/.vscode-server \
+#     && mkdir -p "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" \
+#     #&& curl -fSL "https://update.code.visualstudio.com/commit:${COMMIT_ID}/server-linux-x64/stable" -o vscode-server.tar.gz \
+#     && curl -fSL "https://vscode.download.prss.microsoft.com/dbazure/download/stable/${COMMIT_ID}/vscode-server-linux-x64.tar.gz" -o vscode-server.tar.gz \
+#     && tar -xzf vscode-server.tar.gz -C "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}" --strip-components=1 \
+#     && rm -f vscode-server.tar.gz \
+#     && for extension in \
+#         bradlc.vscode-tailwindcss \
+#         # dawhite.mustache \
+#         # dbaeumer.vscode-eslint \
+#         # editorconfig.editorconfig \
+#         # esbenp.prettier-vscode \
+#         golang.go \
+#         # ms-azuretools.vscode-containers \
+#         # ms-vscode.makefile-tools \
+#         openai.chatgpt \
+#         svelte.svelte-vscode \
+#         # vitest.explorer \
+#     ; do \
+#     "${VSCODE_SERVER_DIR}/bin/${COMMIT_ID}/bin/code-server" --install-extension "${extension}"; \
+#     done
 
 RUN set -eux \
     && cd / \
