@@ -19,11 +19,11 @@ RUN set -eux \
         inotify-tools \
         jq \
         mariadb-client \
+        openssh-server \
         procps \
         # psmisc \
         # redis-tools \
         ripgrep \
-        sshd \
         supervisor \
         # tini \
         # unzip \
