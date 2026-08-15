@@ -21,7 +21,7 @@ RUN set -eux \
         mariadb-client \
         openssh-server \
         procps \
-        # psmisc \
+        psmisc \
         # redis-tools \
         ripgrep \
         supervisor \
